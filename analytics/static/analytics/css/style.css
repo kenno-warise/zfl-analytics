@@ -1,4 +1,43 @@
 /* analytics/index.html */
-h1 {
-  color: violet;
+.navbar {
+  background-color: greenyellow;
+  padding-top: 0;
+  padding-bottom: 0;
 }
+
+.navbar h4 {
+  color: limegreen;
+}
+
+figure {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+p {
+  font-weight: bold;
+}
+
+.display-1 {
+  font-weight: bold;
+}
+
+form {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+#chart_div {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.table {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.title {
+  color: white;
+}
+

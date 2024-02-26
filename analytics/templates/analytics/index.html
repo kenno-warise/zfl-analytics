@@ -1,14 +1,164 @@
-<!-- { extends 'base.html' } -->
-<!-- { load static } -->
-<html>
-  <head>
-    <!-- { block analytics-style } -->
-    <!-- <link rel="stylesheet" href="{ static 'analytics/css/style.css' }"> -->
-    <!-- { endblock } -->
-  </head>
-  <body>
-    <!-- { block content } -->
-    <h1>Welcome to the analytics site!!</h1>
-    <!-- { endblock } -->
-  </body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block analytics-style %}
+<!-- Original CSS -->
+<link rel="stylesheet" href="{% static 'analytics/css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<nav class="navbar sticky-top">
+  <div class="container-fluid">
+    <h4>{% block title %}アナリティクス{% endblock %}</h4>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col"><!-- Bootstrap グリッドシステム左側 -->
+    </div>
+    <div class="col-lg-8 col-12"><!-- Bootstrap グリッドシステム中央 -->
+
+      {% if not data %}
+      <figure class="text-center">
+	<blockquote class="blockquote">
+	  <p>ようこそアナリティクスページへ</p>
+	</blockquote>
+	<figcaption class="blockquote-footer">
+	  Welcome to <cite title="Source Title">analytics page</cite>
+	</figcaption>
+      </figure>
+      {% else %}
+      <figure class="text-center">
+	<blockquote class="blockquote">
+	  <p>ようこそゼロフラのアナリティクスページへ</p>
+	</blockquote>
+	<figcaption class="blockquote-footer">
+	  Welcome to Zero From Light <cite title="Source Title">analytics page</cite>
+	</figcaption>
+      </figure>
+      {% endif %}
+
+      <!-- { if not df }
+	<figure class="text-center">
+	<blockquote class="blockquote">
+	<i class="bi bi-cone-striped" style="font-size: 400%; color: red;"></i><h1 class="display-1">準備中...</h1>
+	</blockquote>
+	<figcaption class="blockquote-footer">
+	in preparation
+	</figcaption>
+	</figure>
+	{ else } -->
+	<form>
+	  <div class="row">
+	    <div class="col">
+	      <select class="form-select" aria-label="Default select example">
+		<option selected>データ名</option>
+		<option value="1">アクセス数</option>
+		<option value="2">新規</option>
+		<option value="3">ページビュー</option>
+		<option value="4">セッション</option>
+	      </select>
+	    </div>
+	    <div class="col">
+	      <select class="form-select" aria-label="Default select example">
+		<option selected>日付</option>
+		<option value="1">全て</option>
+		<option value="2">１年前から現在</option>
+		<option value="3">半年前から現在</option>
+	      </select>
+	    </div>
+	  </div>
+	</form>
+
+	<div id="chart_div"></div>
+
+	<table class="table">
+	  <thead>
+	    <tr>
+	      <th scope="col">日付</th>
+	      <th scope="col">アクセス数</th>
+	    </tr>
+	  </thead>
+	  <tbody class="table-group-divider">
+	    <!-- { for index, row data.iterows } -->
+	    <tr>
+	      <th scope="row">2024年12月</th>
+	      <td>1030</td>
+	    </tr>
+	    <!-- { endfor } -->
+	    <tr>
+	      <th scope="row">2024年11月</th>
+	      <td>660</td>
+	    </tr>
+	    <tr>
+	      <th scope="row">2024年10月</th>
+	      <td>1170</td>
+	    </tr>
+	    <tr>
+	      <th scope="row">2024年9月</th>
+	      <td>1000</td>
+	    </tr>
+	    <tr>
+	      <th scope="row">2024年8月</th>
+	      <td>1030</td>
+	    </tr>
+	    <tr>
+	      <th scope="row">2024年7月</th>
+	      <td>660</td>
+	    </tr>
+	  </tbody>
+	</table>
+    </div>
+    <div class="col"><!-- Bootstrap グリッドシステム右側 -->
+    </div>
+  </div>
+</div>
+
+<!-- Google Charts -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  google.charts.load('current', {'packages':['bar']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+    // { for index, row in data.iterows }
+    ['日付', 'アクセス数'],
+    ['2024年1月', 100],
+    ['2024年2月', 117],
+    ['2024年3月', 660],
+    ['2024年4月', 800],
+    ['2024年5月', 1000],
+    ['2024年6月', 1170],
+    ['2024年7月', 3000],
+    ['2024年8月', 5000],
+    ['2024年9月', 7000],
+    ['2024年10月', 10000],
+    ['2024年11月', 14000],
+    ['2024年12月', 17000]
+    // { endfor }
+  ]);
+
+  // セレクトフォームの実装次第で「202402」のような要素だった場合、アクシズ（hAxis）のフォーマットを変更する。
+  var options = {
+    chart: {
+      title: 'アクセス数',
+      subtitle: '2024年1月-2024年12月',
+    },
+    colors: ['#33ac71'],
+    width: '100%',// グラフの横長
+    height: 400,// グラフの縦長
+    vAxis: {format: 'decimal'},// 左側軸のフォーマット
+    hAxis: {textPosition: 'out', title: ''},
+    legend: { position: 'none', textStyle: {fontSize: 10}},// 凡例の位置（'none'しか効かない）
+  };
+
+  var chart = new google.charts.Bar(document.getElementById('chart_div'));
+
+  chart.draw(data, google.charts.Bar.convertOptions(options));
+}
+</script>
+<!-- { endif } -->
+
+{% endblock %}
