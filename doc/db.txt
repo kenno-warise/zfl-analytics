@@ -1,0 +1,12 @@
+アナリティクスシステムのデータベース
+
+- テーブル名
+  DimensionDate
+  - フィールド名
+  - date（日付） デートタイム
+  - users（アクティブユーザー）イント
+  - new_users（新規ユーザー）イント
+  - page_views（ページビュー）イント
+  - sessions（１ユーザーが移動した数の合計）イント
+  - ad_revenue（アドセンス収入）イント
+  - ad_impressions（広告が表示された数）イント
