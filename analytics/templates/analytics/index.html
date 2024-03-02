@@ -53,7 +53,7 @@
 	  <div class="row">
 	    <div class="col">
 	      <select class="form-select" aria-label="Default select example">
-		<option selected>データ名</option>
+		<!-- option selected>データ名</option -->
 		<option value="1">アクセス数</option>
 		<option value="2">新規</option>
 		<option value="3">ページビュー</option>
@@ -81,32 +81,12 @@
 	    </tr>
 	  </thead>
 	  <tbody class="table-group-divider">
-	    <!-- { for index, row data.iterows } -->
+	    {% for index, row in data_table.iterrows %}
 	    <tr>
-	      <th scope="row">2024年12月</th>
-	      <td>1030</td>
+	      <th scope="row">{{ index }}</th>
+	      <td>{{ row.users }}</td>
 	    </tr>
-	    <!-- { endfor } -->
-	    <tr>
-	      <th scope="row">2024年11月</th>
-	      <td>660</td>
-	    </tr>
-	    <tr>
-	      <th scope="row">2024年10月</th>
-	      <td>1170</td>
-	    </tr>
-	    <tr>
-	      <th scope="row">2024年9月</th>
-	      <td>1000</td>
-	    </tr>
-	    <tr>
-	      <th scope="row">2024年8月</th>
-	      <td>1030</td>
-	    </tr>
-	    <tr>
-	      <th scope="row">2024年7月</th>
-	      <td>660</td>
-	    </tr>
+	    {% endfor %}
 	  </tbody>
 	</table>
     </div>
@@ -123,28 +103,17 @@ google.charts.setOnLoadCallback(drawChart);
 
 function drawChart() {
   var data = google.visualization.arrayToDataTable([
-    // { for index, row in data.iterows }
     ['日付', 'アクセス数'],
-    ['2024年1月', 100],
-    ['2024年2月', 117],
-    ['2024年3月', 660],
-    ['2024年4月', 800],
-    ['2024年5月', 1000],
-    ['2024年6月', 1170],
-    ['2024年7月', 3000],
-    ['2024年8月', 5000],
-    ['2024年9月', 7000],
-    ['2024年10月', 10000],
-    ['2024年11月', 14000],
-    ['2024年12月', 17000]
-    // { endfor }
+    {% for index, row in data_graph.iterrows %}
+    ['{{ index }}', {{ row.users }}],
+    {% endfor %}
   ]);
 
   // セレクトフォームの実装次第で「202402」のような要素だった場合、アクシズ（hAxis）のフォーマットを変更する。
   var options = {
     chart: {
       title: 'アクセス数',
-      subtitle: '2024年1月-2024年12月',
+      subtitle: '{{ data_graph_subtitle }}',//'2024年1月-2024年12月',
     },
     colors: ['#33ac71'],
     width: '100%',// グラフの横長
