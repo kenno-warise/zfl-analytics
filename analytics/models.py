@@ -14,13 +14,13 @@ class GoogleAnalytics4Config(models.Model):
 
 
 class DimensionDate(models.Model):
-    dates = models.DateField()  # 西暦と月日を保存
-    users = models.PositiveIntegerField()  # 0と正の整数を保存
-    new_users = models.PositiveIntegerField()
-    page_views = models.PositiveIntegerField()
-    sessions = models.PositiveIntegerField()
-    ad_revenue = models.PositiveIntegerField()
-    ad_impressions = models.PositiveIntegerField()
+    dates = models.DateField(verbose_name="日付")  # 西暦と月日を保存
+    users = models.PositiveIntegerField(verbose_name="アクセス数")  # 0と正の整数を保存
+    new_users = models.PositiveIntegerField(verbose_name="新規ユーザー数")
+    page_views = models.PositiveIntegerField(verbose_name="ページビュー数")
+    sessions = models.PositiveIntegerField(verbose_name="セッション数")
+    ad_revenue = models.PositiveIntegerField(verbose_name="広告収益")
+    ad_impressions = models.PositiveIntegerField(verbose_name="インプレッション数")
 
     def __str__(self):
         dates = str(self.dates)
