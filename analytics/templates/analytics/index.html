@@ -53,8 +53,8 @@
 	  <div class="row">
 	    <div class="col">
 	      <select id="select_data" class="form-select" aria-label="Default select example" onclick='document.getElementById("ch_servings_submit").click();'>
-	      
-	      <!-- option selected>データ名</option -->
+
+		<!-- option selected>データ名</option -->
 		<option value="users">アクセス数</option>
 		<option value="new_users">新規ユーザー数</option>
 		<option value="page_views">ページビュー数</option>
@@ -64,7 +64,6 @@
 	      </select>
 	    </div>
 	    <div class="col">
-	      <!--<select class="form-select" aria-label="Default select example">-->
 	      <select id="select_date" class="form-select" aria-label="Default select example" onclick='document.getElementById("ch_servings_submit").click();'>
 		<option selected>日付</option>
 		<option value="1">全て</option>
@@ -73,10 +72,8 @@
 	      </select>
 	    </div>
 	  </div>
-	  
 	  <input type="submit" value="送信" id="ch_servings_submit" style="display:none;">
-	  
-	  </form>
+	</form>
 
 	<div id="chart_div"></div>
 
@@ -107,37 +104,65 @@
 <!-- Google Charts -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
- $('#ajax_chenge').on('submit', e => {
+  $('#ajax_chenge').on('submit', e => {
     e.preventDefault();
- 
+
     // Ajax処理
     $.ajax({
       'url': "{% url 'analytics:pulldown' %}",
       'type': 'GET',
       'data': {
-        'data_name': $('#select_data').val(),
+	'data_name': $('#select_data').val(),
 	'date_value': $('#select_date').val(),
       },
       'dataType': 'json'
     }).done(response => {
+      // Google Charts
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+      let chart_array = [['日付', response.data_table_head]]
+      for (const graph of response.data_graph) {
+	chart_array.push(graph)
+      }
+      function drawChart() {
+	var data = google.visualization.arrayToDataTable(chart_array);
+
+	var options = {
+	  chart: {
+	    title: response.data_table_head,
+	    // 2xxx年x月-2xxx年x月
+	    subtitle: chart_array[1][0]+'-'+chart_array[chart_array.length-1][0],
+	  },
+	  colors: ['#33ac71'],
+	  width: '100%',// グラフの横長
+	  height: 400,// グラフの縦長
+	  vAxis: {format: 'decimal'},// 左側軸のフォーマット
+	  hAxis: {textPosition: 'out', title: ''},
+	  legend: { position: 'none', textStyle: {fontSize: 10}},// 凡例の位置（'none'しか効かない）
+	};
+	var chart = new google.charts.Bar(document.getElementById('chart_div'));
+	chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
+
+      // テーブル処理
       $('#table_head').empty(); // #table_head内の要素を削除
       $('#data_table').empty(); // #data_table内の要素を削除
 
       $('#table_head').text(response.data_table_head); // #table_head内に要素を追加
       // ループ処理
-      for (const data of response.data_table) {
- console.log(response)
+      for (const table of response.data_table) {
 	// 必要なテーブルタグを作成
 	const tr = $('<tr>');
-	const th = $('<th>', { scop:'row', text: data[0] });
-	const td = $('<td>', {text: data[1]});
+	const th = $('<th>', { scop:'row', text: table[0] });
+	const td = $('<td>', {text: table[1]});
 	// #data_table内にテーブルを追加
 	$('#data_table').append(tr.append(th).append(td));
       }
     });
-   });
+  });
 
-  google.charts.load('current', {'packages':['bar']});
+// デフォルトのGoogle Chart
+google.charts.load('current', {'packages':['bar']});
 google.charts.setOnLoadCallback(drawChart);
 
 function drawChart() {
