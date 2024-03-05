@@ -41,6 +41,16 @@ def pulldown(request):
     # 日付データを元に日付以外のデータを集約する
     df = df.drop('id', axis=1).groupby(df["dates"]).sum()
     
+    # グラフ用の処理 ----------------------------------------------
+    # 日付の設定値を変える処理
+    if date_value == '2':
+        df = df[-12:]
+    elif date_value == '3':
+        df = df[-6:]
+
+    # jsresponse用にリストを作成
+    graph_data = [[index,data] for index, data in zip(df.index, df[data_name])]
+    
     # テーブル用の処理 ---------------------------------------------
     # テーブルに渡す用に、日付を降順にソートしたデータフレームを作成
     df_descending = df.sort_values('dates', ascending=False)
@@ -57,5 +67,6 @@ def pulldown(request):
     return JsonResponse({
                 'data_table_head': verbose_name,
                 'data_table': ls_data,
+                'data_graph': graph_data,
             }, status=200)
 
