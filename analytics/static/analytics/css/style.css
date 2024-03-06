@@ -37,6 +37,12 @@ form {
   margin-bottom: 50px;
 }
 
+/* テーブルのスクロール */
+.table-scroll {
+  height: 20%;
+  overflow: scroll;
+}
+
 .title {
   color: white;
 }

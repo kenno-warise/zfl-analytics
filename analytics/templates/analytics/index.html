@@ -72,6 +72,7 @@
 
       <div id="chart_div"></div>
 
+      <div class="table-scroll" id="table-scroll">
       <table class="table">
 	<thead>
 	  <tr>
@@ -88,6 +89,7 @@
 	  {% endfor %}
 	</tbody>
       </table>
+      </div>
       {% endif %}
     </div>
     <div class="col">
@@ -144,6 +146,11 @@
       }
 
       // テーブル処理
+      if (response.data_table.length <= 12){
+	$('.table-scroll').removeAttr('class'); // スクロール指定した属性を削除
+      }else{
+	$('#table-scroll').attr('class', 'table-scroll'); // スクロールを有効にする
+      }
       $('#table_head').empty(); // #table_head内の要素を削除
       $('#data_table').empty(); // #data_table内の要素を削除
 
