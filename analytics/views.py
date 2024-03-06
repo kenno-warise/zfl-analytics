@@ -12,8 +12,10 @@ class HomePageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         dd_obj_all = DimensionDate.objects.all()
-        # 値が存在するかしないか
-        if dd_obj_all.exists():
+        # 値が存在するか
+        dd_value_exist = dd_obj_all.exists()
+        if dd_value_exist:
+            # 値が存在すればデータフレームを作成する --------------------------
             df = read_frame(DimensionDate.objects.all())
             # 日付データを「年月」のフォーマットに変換
             df['dates'] = df['dates'].apply(lambda df: df.strftime("%Y年%m月"))
@@ -25,6 +27,7 @@ class HomePageView(TemplateView):
             context["data_graph"] = df
             context["data_graph_subtitle"] = f"{df.index[0]} - {df.index[-1]}"
             context["data_table"] = df_descending
+        context["dd_exist"] = dd_value_exist
         return context
 
 

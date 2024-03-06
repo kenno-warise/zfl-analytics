@@ -2,6 +2,8 @@
 {% load static %}
 
 {% block analytics-style %}
+<!-- Bootstrap ICON -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <!-- Original CSS -->
 <link rel="stylesheet" href="{% static 'analytics/css/style.css' %}">
 {% endblock %}
@@ -21,7 +23,6 @@
     <div class="col-lg-8 col-12">
       <!-- Bootstrap グリッドシステム中央 -->
 
-      {% if not data %}
       <figure class="text-center">
 	<blockquote class="blockquote">
 	  <p>ようこそアナリティクスページへ</p>
@@ -30,18 +31,8 @@
 	  Welcome to <cite title="Source Title">analytics page</cite>
 	</figcaption>
       </figure>
-      {% else %}
-      <figure class="text-center">
-	<blockquote class="blockquote">
-	  <p>ようこそゼロフラのアナリティクスページへ</p>
-	</blockquote>
-	<figcaption class="blockquote-footer">
-	  Welcome to Zero From Light <cite title="Source Title">analytics page</cite>
-	</figcaption>
-      </figure>
-      {% endif %}
 
-      <!--
+      {% if not dd_exist %}
 	<figure class="text-center">
 	<blockquote class="blockquote">
 	<i class="bi bi-cone-striped" style="font-size: 400%; color: red;"></i><h1 class="display-1">準備中...</h1>
@@ -50,7 +41,7 @@
 	in preparation
 	</figcaption>
 	</figure>
-      -->
+	{% else %}
       <form id="ajax_chenge" action="{% url 'analytics:pulldown' %}" method="GET">
 	<div class="row">
 	  <div class="col">
@@ -97,6 +88,7 @@
 	  {% endfor %}
 	</tbody>
       </table>
+      {% endif %}
     </div>
     <div class="col">
       <!-- Bootstrap グリッドシステム右側 -->
@@ -104,6 +96,8 @@
   </div>
 </div>
 
+{% if dd_exist %}
+<!-- data_graphデータフレームが空でなければ読み込む -->
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <!-- Google Charts -->
@@ -197,5 +191,5 @@ function drawChart() {
   chart.draw(data, google.charts.Bar.convertOptions(options));
 }
 </script>
-
+{% endif %}
 {% endblock %}
