@@ -15,9 +15,11 @@
 
 <div class="container">
   <div class="row">
-    <div class="col"><!-- Bootstrap グリッドシステム左側 -->
+    <div class="col">
+      <!-- Bootstrap グリッドシステム左側 -->
     </div>
-    <div class="col-lg-8 col-12"><!-- Bootstrap グリッドシステム中央 -->
+    <div class="col-lg-8 col-12">
+      <!-- Bootstrap グリッドシステム中央 -->
 
       {% if not data %}
       <figure class="text-center">
@@ -39,7 +41,7 @@
       </figure>
       {% endif %}
 
-      <!-- { if not df }
+      <!--
 	<figure class="text-center">
 	<blockquote class="blockquote">
 	<i class="bi bi-cone-striped" style="font-size: 400%; color: red;"></i><h1 class="display-1">準備中...</h1>
@@ -48,53 +50,56 @@
 	in preparation
 	</figcaption>
 	</figure>
-	{ else } -->
-	<form id="ajax_chenge" action="{% url 'analytics:pulldown' %}" method="GET">
-	  <div class="row">
-	    <div class="col">
-	      <select id="select_data" class="form-select" aria-label="Default select example" onclick='document.getElementById("ch_servings_submit").click();'>
+      -->
+      <form id="ajax_chenge" action="{% url 'analytics:pulldown' %}" method="GET">
+	<div class="row">
+	  <div class="col">
+	    <select id="select_data" class="form-select" aria-label="Default select example" onclick='document.getElementById("ch_servings_submit").click();'>
 
-		<!-- option selected>データ名</option -->
-		<option value="users">アクセス数</option>
-		<option value="new_users">新規ユーザー数</option>
-		<option value="page_views">ページビュー数</option>
-		<option value="sessions">セッション数</option>
-		<option value="ad_revenue">広告収益</option>
-		<option value="ad_impressions">インプレッション数</option>
-	      </select>
-	    </div>
-	    <div class="col">
-	      <select id="select_date" class="form-select" aria-label="Default select example" onclick='document.getElementById("ch_servings_submit").click();'>
-		<option selected>日付</option>
-		<option value="1">全て</option>
-		<option value="2">１年前から現在</option>
-		<option value="3">半年前から現在</option>
-	      </select>
-	    </div>
+	      <!-- option selected>データ名</option -->
+	      <option value="users">アクセス数</option>
+	      <option value="new_users">新規ユーザー数</option>
+	      <option value="page_views">ページビュー数</option>
+	      <option value="sessions">セッション数</option>
+	      {% if user.is_superuser %}
+	      <option value="ad_revenue">広告収益</option>
+	      <option value="ad_impressions">インプレッション数</option>
+	      {% endif %}
+	    </select>
 	  </div>
-	  <input type="submit" value="送信" id="ch_servings_submit" style="display:none;">
-	</form>
+	  <div class="col">
+	    <select id="select_date" class="form-select" aria-label="Default select example" onclick='document.getElementById("ch_servings_submit").click();'>
+	      <option selected>日付</option>
+	      <option value="1">全て</option>
+	      <option value="2">１年前から現在</option>
+	      <option value="3">半年前から現在</option>
+	    </select>
+	  </div>
+	</div>
+	<input type="submit" value="送信" id="ch_servings_submit" style="display:none;">
+      </form>
 
-	<div id="chart_div"></div>
+      <div id="chart_div"></div>
 
-	<table class="table">
-	  <thead>
-	    <tr>
-	      <th scope="col">日付</th>
-	      <th id="table_head" scope="col">アクセス数</th>
-	    </tr>
-	  </thead>
-	  <tbody id="data_table" class="table-group-divider">
-	    {% for index, row in data_table.iterrows %}
-	    <tr>
-	      <th scope="row">{{ index }}</th>
-	      <td>{{ row.users }}</td>
-	    </tr>
-	    {% endfor %}
-	  </tbody>
-	</table>
+      <table class="table">
+	<thead>
+	  <tr>
+	    <th scope="col">日付</th>
+	    <th id="table_head" scope="col">アクセス数</th>
+	  </tr>
+	</thead>
+	<tbody id="data_table" class="table-group-divider">
+	  {% for index, row in data_table.iterrows %}
+	  <tr>
+	    <th scope="row">{{ index }}</th>
+	    <td>{{ row.users }}</td>
+	  </tr>
+	  {% endfor %}
+	</tbody>
+      </table>
     </div>
-    <div class="col"><!-- Bootstrap グリッドシステム右側 -->
+    <div class="col">
+      <!-- Bootstrap グリッドシステム右側 -->
     </div>
   </div>
 </div>
@@ -192,6 +197,5 @@ function drawChart() {
   chart.draw(data, google.charts.Bar.convertOptions(options));
 }
 </script>
-<!-- { endif } -->
 
 {% endblock %}
