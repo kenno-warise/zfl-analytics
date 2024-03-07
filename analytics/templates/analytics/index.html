@@ -9,9 +9,47 @@
 {% endblock %}
 
 {% block content %}
+
+{% if not analytics_set %}
+{{ analytics_set.nav_title }}
+<div class="card text-center">
+  <div class="card-header">
+    <i class="bi bi-exclamation-triangle" style="font-size: 200%;"></i>
+  </div>
+  <div class="card-body">
+	<blockquote class="blockquote">
+	  <p class="card-title">アプリケーションの初期設定ができていません。</p>
+	<figcaption class="blockquote-footer">
+	  Initial settings for the application have not been completed.
+	</figcaption>
+	</blockquote>
+	<blockquote class="blockquote">
+	  <p class="card-text">初期設定の流れ</p>
+	<figcaption class="blockquote-footer">
+	  Initial setup flow
+	</figcaption>
+	</blockquote>
+
+	<pre><code>
+	$ python3 manage.py migrate
+	$ python3 manage.py createsuperuser
+	$ python3 manage.py analytics_set
+        アナリティクスアプリの初期設定完了
+	</code></pre>
+
+    <a href="https://github.com/kenno-warise/zfl-analytics/blob/main/README.md" class="btn btn-default">
+      ドキュメント <i class="bi bi-github"></i>
+    </a>
+  </div>
+  <div class="card-footer text-body-secondary">
+    <i class="bi bi-exclamation-triangle" style="font-size: 200%;"></i>
+  </div>
+</div>
+
+{% else %}
 <nav class="navbar sticky-top">
   <div class="container-fluid">
-    <h4>{% block title %}アナリティクス{% endblock %}</h4>
+    <h4>{% block title %}{{ analytics_set.nav_title }}{% endblock %}</h4>
     {% if user.is_superuser %}
     <ul class="nav justify-content-end">
       <li class="nav-item">
@@ -41,21 +79,21 @@
 	<div class="modal-header">
 	  <h1 class="modal-title fs-5" id="exampleModalLabel">
 	    <blockquote class="blockquote">
-	      確認画面
-	    </blockquote>
+	      <p>確認画面</p>
 	    <figcaption class="blockquote-footer">
 	      Confirmation
 	    </figcaption>
+	    </blockquote>
 	  </h1>
 	  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	</div>
 	<div class="modal-body">
 	  <blockquote class="blockquote">
-	    アナリティクスデータの更新を実行しますか？
-	  </blockquote>
+	    <p>アナリティクスデータの更新を実行しますか？</p>
 	  <figcaption class="blockquote-footer">
 	    Would you like to update your analytics data?
 	  </figcaption>
+	  </blockquote>
 	</div>
 	<div class="modal-footer">
 	  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Stop</button>
@@ -76,11 +114,11 @@
 
       <figure class="text-center">
 	<blockquote class="blockquote">
-	  <p>ようこそアナリティクスページへ</p>
-	</blockquote>
+	  <p>{{ analytics_set.heading_ja }}</p>
 	<figcaption class="blockquote-footer">
-	  Welcome to <cite title="Source Title">analytics page</cite>
+	  {{ analytics_set.heading_us }}
 	</figcaption>
+	</blockquote>
       </figure>
 
       {% if not dd_exist %}
@@ -249,5 +287,6 @@ function drawChart() {
   chart.draw(data, google.charts.Bar.convertOptions(options));
 }
 </script>
+{% endif %}
 {% endif %}
 {% endblock %}

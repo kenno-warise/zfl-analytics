@@ -1,4 +1,12 @@
 /* analytics/index.html */
+.card-body pre {
+  text-align: left;
+  background-color: black;
+  color: white;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
 .navbar {
   background-color: greenyellow;
   padding-top: 0;
