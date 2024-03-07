@@ -1,10 +1,14 @@
 import pandas as pd
 
+from django.contrib import messages
 from django.http import JsonResponse
+from django.shortcuts import redirect
 from django.views.generic.base import TemplateView
 from django_pandas.io import read_frame
 
-from .models import DimensionDate
+from .models import DimensionDate, GoogleAnalytics4Config
+from .update_data import update_analyticsdata
+
 
 class HomePageView(TemplateView):
     template_name = "analytics/index.html"
@@ -76,3 +80,16 @@ def pulldown(request):
                 'data_graph': graph_data,
             }, status=200)
 
+
+def update(request):
+    """アナリティクスデータの更新"""
+    user = request.user
+    ga4_config = GoogleAnalytics4Config.objects.all().first()
+    if ga4_config:
+        if user == ga4_config.author:
+            update_analyticsdata()
+            messages.success(request, "アナリティクスデータの更新が完了しました")
+            return redirect("analytics:index")
+    else:
+        messages.error(request, "GoogleAnalytics4Configの設定ができていません")
+        return redirect("analytics:index")
