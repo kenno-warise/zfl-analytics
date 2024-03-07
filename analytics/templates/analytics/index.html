@@ -12,8 +12,59 @@
 <nav class="navbar sticky-top">
   <div class="container-fluid">
     <h4>{% block title %}アナリティクス{% endblock %}</h4>
+    {% if user.is_superuser %}
+    <ul class="nav justify-content-end">
+      <li class="nav-item">
+	<button title="Update analytics data" type="button" class="btn btn-defult" data-bs-toggle="modal" data-bs-target="#exampleModal">
+	  <i class="bi bi-arrow-clockwise"style="font-size:150%; color:limegreen;"></i>
+	</button>
+      </li>
+    </ul>
+    {% endif %}
   </div>
 </nav>
+
+<!-- Message -->
+{% if messages %}
+<div class="alert alert-danger" role="alert">
+  {% for message in messages %}
+  <strong>{{ message }}</strong>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- Modal -->
+<form action="{% url 'analytics:update' %}" method="GET">
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+	<div class="modal-header">
+	  <h1 class="modal-title fs-5" id="exampleModalLabel">
+	    <blockquote class="blockquote">
+	      確認画面
+	    </blockquote>
+	    <figcaption class="blockquote-footer">
+	      Confirmation
+	    </figcaption>
+	  </h1>
+	  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	</div>
+	<div class="modal-body">
+	  <blockquote class="blockquote">
+	    アナリティクスデータの更新を実行しますか？
+	  </blockquote>
+	  <figcaption class="blockquote-footer">
+	    Would you like to update your analytics data?
+	  </figcaption>
+	</div>
+	<div class="modal-footer">
+	  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Stop</button>
+	  <button type="submit" class="btn btn-primary">Execution</button>
+	</div>
+      </div>
+    </div>
+  </div>
+</form>
 
 <div class="container">
   <div class="row">
@@ -33,15 +84,15 @@
       </figure>
 
       {% if not dd_exist %}
-	<figure class="text-center">
+      <figure class="text-center">
 	<blockquote class="blockquote">
-	<i class="bi bi-cone-striped" style="font-size: 400%; color: red;"></i><h1 class="display-1">準備中...</h1>
+	  <i class="bi bi-cone-striped" style="font-size: 400%; color: red;"></i><h1 class="display-1">準備中...</h1>
 	</blockquote>
 	<figcaption class="blockquote-footer">
-	in preparation
+	  in preparation
 	</figcaption>
-	</figure>
-	{% else %}
+      </figure>
+      {% else %}
       <form id="ajax_chenge" action="{% url 'analytics:pulldown' %}" method="GET">
 	<div class="row">
 	  <div class="col">
@@ -73,22 +124,22 @@
       <div id="chart_div"></div>
 
       <div class="table-scroll" id="table-scroll">
-      <table class="table">
-	<thead>
-	  <tr>
-	    <th scope="col">日付</th>
-	    <th id="table_head" scope="col">アクセス数</th>
-	  </tr>
-	</thead>
-	<tbody id="data_table" class="table-group-divider">
-	  {% for index, row in data_table.iterrows %}
-	  <tr>
-	    <th scope="row">{{ index }}</th>
-	    <td>{{ row.users }}</td>
-	  </tr>
-	  {% endfor %}
-	</tbody>
-      </table>
+	<table class="table">
+	  <thead>
+	    <tr>
+	      <th scope="col">日付</th>
+	      <th id="table_head" scope="col">アクセス数</th>
+	    </tr>
+	  </thead>
+	  <tbody id="data_table" class="table-group-divider">
+	    {% for index, row in data_table.iterrows %}
+	    <tr>
+	      <th scope="row">{{ index }}</th>
+	      <td>{{ row.users }}</td>
+	    </tr>
+	    {% endfor %}
+	  </tbody>
+	</table>
       </div>
       {% endif %}
     </div>
