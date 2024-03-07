@@ -3,6 +3,27 @@ from django.core.validators import MaxValueValidator
 from django.db import models
 
 
+class AnalyticsAppSettings(models.Model):
+    nav_title = models.CharField(
+            verbose_name="ナビゲーションのタイトル",
+            max_length=50,
+            help_text="ナビゲーションバーの左上に表記される文字"
+    )
+    heading_ja = models.CharField(
+            verbose_name="日本語の見出し",
+            max_length=100,
+            help_text="画面中央頭に表記される見出し。日本語で記入してください。"
+    )
+    heading_us = models.CharField(
+            verbose_name="英語の見出し",
+            max_length=100,
+            help_text="画面中央頭に表記される見出し。英語で記入してください。"
+    )
+
+    def __str__(self):
+        return self.nav_title
+
+
 class GoogleAnalytics4Config(models.Model):
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     property_id = models.PositiveIntegerField()

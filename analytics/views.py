@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 from django.views.generic.base import TemplateView
 from django_pandas.io import read_frame
 
-from .models import DimensionDate, GoogleAnalytics4Config
+from .models import AnalyticsAppSettings, DimensionDate, GoogleAnalytics4Config
 from .update_data import update_analyticsdata
 
 
@@ -15,24 +15,29 @@ class HomePageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        dd_obj_all = DimensionDate.objects.all()
-        # 値が存在するか
-        dd_value_exist = dd_obj_all.exists()
-        if dd_value_exist:
-            # 値が存在すればデータフレームを作成する --------------------------
-            df = read_frame(DimensionDate.objects.all())
-            # 日付データを「年月」のフォーマットに変換
-            df['dates'] = df['dates'].apply(lambda df: df.strftime("%Y年%m月"))
-            # 日付データを元に日付以外のデータを集約する
-            df = df.drop('id', axis=1).groupby(df["dates"]).sum()
-            # テーブルに渡す用に、日付を降順にソートしたデータフレームを作成
-            df_descending = df.sort_values('dates', ascending=False)
-            # テンプレートへ渡すコンテキストデータに格納
-            context["data_graph"] = df
-            context["data_graph_subtitle"] = f"{df.index[0]} - {df.index[-1]}"
-            context["data_table"] = df_descending
-        context["dd_exist"] = dd_value_exist
-        return context
+        try:
+            analytics_set = AnalyticsAppSettings.objects.all().last()
+            dd_obj_all = DimensionDate.objects.all()
+            # 値が存在するか
+            dd_value_exist = dd_obj_all.exists()
+            if dd_value_exist:
+                # 値が存在すればデータフレームを作成する --------------------------
+                df = read_frame(DimensionDate.objects.all())
+                # 日付データを「年月」のフォーマットに変換
+                df['dates'] = df['dates'].apply(lambda df: df.strftime("%Y年%m月"))
+                # 日付データを元に日付以外のデータを集約する
+                df = df.drop('id', axis=1).groupby(df["dates"]).sum()
+                # テーブルに渡す用に、日付を降順にソートしたデータフレームを作成
+                df_descending = df.sort_values('dates', ascending=False)
+                # テンプレートへ渡すコンテキストデータに格納
+                context["data_graph"] = df
+                context["data_graph_subtitle"] = f"{df.index[0]} - {df.index[-1]}"
+                context["data_table"] = df_descending
+            context["analytics_set"] = analytics_set
+            context["dd_exist"] = dd_value_exist
+            return context
+        except:
+            return context
 
 
 def pulldown(request):
