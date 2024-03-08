@@ -47,8 +47,9 @@ form {
 
 /* テーブルのスクロール */
 .table-scroll {
-  height: 20%;
-  overflow: scroll;
+  height: 600px;
+  overflow-y: scroll;
+  margin-bottom: 50px;
 }
 
 .title {
