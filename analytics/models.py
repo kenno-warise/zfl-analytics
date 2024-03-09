@@ -19,6 +19,31 @@ class AnalyticsAppSettings(models.Model):
             max_length=100,
             help_text="画面中央頭に表記される見出し。英語で記入してください。"
     )
+    base_html_file = models.CharField(
+            blank=True,
+            null=True,
+            verbose_name="ベースファイル",
+            default='base.html',
+            max_length=100,
+            help_text="htmlファイルのベースとなるファイル名を入力してください。プロジェクト直下の場合は「base.html」。アプリ直下の場合は「app/base.html」。",
+    )
+
+    def save(self, *args, **kwargs):
+        import os
+        import re
+        from django.conf import settings
+        basehtml_file = "analytics/templates/analytics/base_index.html"
+        file_dir = os.path.join(settings.BASE_DIR, basehtml_file)
+        with open(file_dir, 'r') as f:
+            html_text = f.read()
+
+        # 正規表現モジュールを使ってベースファイル名を置き換える
+        comp = re.compile(r'\w+.html|\w+/\w+.html')
+        html_text = comp.sub(self.base_html_file, html_text)
+        
+        with open(file_dir, 'w') as f:
+            f.write(html_text)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.nav_title
