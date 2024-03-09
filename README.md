@@ -57,6 +57,20 @@ $ python3 manage.py update_analyticsdata
 アナリティクスアプリのデータベース更新完了
 ```
 
+ベースファイルがある場合の設定
+
+```html
+<html>
+  <head>
+    {% block analytics-style %}{% endblock %}
+  </head>
+  <body>
+    {% block content %}
+    {% endblock %}
+  </body>
+</html>
+```
+
 ## License
 
 `zfl-analytics` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
