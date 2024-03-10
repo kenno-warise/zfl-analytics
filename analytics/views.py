@@ -3,7 +3,7 @@ import pandas as pd
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
-from django.views.generic.base import View, TemplateView
+from django.views.generic.base import View
 from django_pandas.io import read_frame
 
 from .models import AnalyticsAppSettings, DimensionDate, GoogleAnalytics4Config
@@ -35,47 +35,12 @@ class HomePageView(View):
             context["analytics_set"] = analytics_set
             context["dd_exist"] = dd_value_exist
             if analytics_set.base_html_file:
-                print('ベースあり')
                 template = 'analytics/base_index.html'
             else:
-                print('ベース無し')
                 template = 'analytics/index.html'
             return render(request, template, context)
         except:
             return render(request, 'analytics/index.html', context)
-
-# class HomePageView(TemplateView):
-# 
-#     template_name = "analytics/index.html"
-# 
-#     def get_context_data(self, **kwargs):
-#         print(dir(self.request))
-#         print(self.request.path_info)
-#         print('パス')
-#         context = super().get_context_data(**kwargs)
-#         try:
-#             analytics_set = AnalyticsAppSettings.objects.all().last()
-#             dd_obj_all = DimensionDate.objects.all()
-#             # 値が存在するか
-#             dd_value_exist = dd_obj_all.exists()
-#             if dd_value_exist:
-#                 # 値が存在すればデータフレームを作成する --------------------------
-#                 df = read_frame(DimensionDate.objects.all())
-#                 # 日付データを「年月」のフォーマットに変換
-#                 df['dates'] = df['dates'].apply(lambda df: df.strftime("%Y年%m月"))
-#                 # 日付データを元に日付以外のデータを集約する
-#                 df = df.drop('id', axis=1).groupby(df["dates"]).sum()
-#                 # テーブルに渡す用に、日付を降順にソートしたデータフレームを作成
-#                 df_descending = df.sort_values('dates', ascending=False)
-#                 # テンプレートへ渡すコンテキストデータに格納
-#                 context["data_graph"] = df
-#                 context["data_graph_subtitle"] = f"{df.index[0]} - {df.index[-1]}"
-#                 context["data_table"] = df_descending
-#             context["analytics_set"] = analytics_set
-#             context["dd_exist"] = dd_value_exist
-#             return context
-#         except:
-#             return context
 
 
 def pulldown(request):
@@ -130,6 +95,7 @@ def update(request):
     ga4_config = GoogleAnalytics4Config.objects.all().first()
     if ga4_config:
         if user == ga4_config.author:
+            print('もしかし更新されとる？')
             update_analyticsdata()
             messages.success(request, "アナリティクスデータの更新が完了しました")
             return redirect("analytics:index")

@@ -1,9 +1,15 @@
 from django.contrib.auth import get_user_model
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 
 class AnalyticsAppSettings(models.Model):
+    CONTAINER_CHOICES = (
+        ('', '無効'),
+        ('container', 'container'),
+        ('container-sm', 'container-sm'),
+        ('container-fluid', 'container-fluid'),
+    )
     nav_title = models.CharField(
             verbose_name="ナビゲーションのタイトル",
             max_length=50,
@@ -27,6 +33,43 @@ class AnalyticsAppSettings(models.Model):
             max_length=100,
             help_text="htmlファイルのベースとなるファイル名を入力してください。プロジェクト直下の場合は「base.html」。アプリ直下の場合は「app/base.html」。",
     )
+    container = models.CharField(
+            verbose_name="コンテナ",
+            blank=True,
+            default="container",
+            max_length=15,
+            choices=CONTAINER_CHOICES,
+    )
+    col_left = models.PositiveIntegerField(
+            verbose_name="カラム左側",
+            default=2,
+            validators=[
+                MaxValueValidator(9)
+            ],
+            help_text="デフォルト値は２です"
+    )
+    col_center = models.PositiveIntegerField(
+            verbose_name="カラム中央",
+            default=8,
+            validators=[
+                MinValueValidator(3),
+                MaxValueValidator(12)
+            ],
+            help_text="デフォルト値は８です"
+    )
+    col_right = models.PositiveIntegerField(
+            verbose_name="カラム右側",
+            default=2,
+            validators=[
+                MaxValueValidator(9)
+            ],
+            help_text="デフォルト値は２です"
+    )
+
+    def clean(self):
+        col_sum = self.col_left + self.col_center + self.col_right
+        if not col_sum <= 12:
+            raise ValueError(f"グリッドシステム総数が{col_sum}です")
 
     def save(self, *args, **kwargs):
         import os
@@ -37,12 +80,15 @@ class AnalyticsAppSettings(models.Model):
         with open(file_dir, 'r') as f:
             html_text = f.read()
 
-        # 正規表現モジュールを使ってベースファイル名を置き換える
-        comp = re.compile(r'\w+.html|\w+/\w+.html')
-        html_text = comp.sub(self.base_html_file, html_text)
-        
-        with open(file_dir, 'w') as f:
-            f.write(html_text)
+        existing_name = re.search(self.base_html_file, html_text)
+        if not existing_name:
+            # 既存のベース.htmlが検索されなければ新名と置き換え
+            # 正規表現モジュールを使ってベースファイル名を置き換える
+            comp = re.compile(r'\w+.html|\w+/\w+.html')
+            html_text = comp.sub(self.base_html_file, html_text)
+            
+            with open(file_dir, 'w') as f:
+                f.write(html_text)
         super().save(*args, **kwargs)
 
     def __str__(self):
