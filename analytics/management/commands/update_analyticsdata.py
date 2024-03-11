@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from analytics.update_data import update_analyticsdata
+from analytics.update_api import update_data
 
 
 class Command(BaseCommand):
@@ -8,7 +8,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            update_analyticsdata()
+            update_data.update_analyticsdata()
             self.stdout.write(self.style.SUCCESS('アナリティクスアプリのデータベース更新完了'))
         except:
             self.stdout.write(self.style.ERROR('GoogleAnalytics4の設定が完了しておりません'))
