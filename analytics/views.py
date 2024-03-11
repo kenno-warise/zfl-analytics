@@ -7,7 +7,7 @@ from django.views.generic.base import View
 from django_pandas.io import read_frame
 
 from .models import AnalyticsAppSettings, DimensionDate, GoogleAnalytics4Config
-from .update_data import update_analyticsdata
+from .update_api import update_data
 
 
 class HomePageView(View):
@@ -39,7 +39,8 @@ class HomePageView(View):
             else:
                 template = 'analytics/index.html'
             return render(request, template, context)
-        except:
+        except Exception as inst:
+            print(inst)
             return render(request, 'analytics/index.html', context)
 
 
@@ -96,7 +97,7 @@ def update(request):
     if ga4_config:
         if user == ga4_config.author:
             print('もしかし更新されとる？')
-            update_analyticsdata()
+            update_data.update_analyticsdata()
             messages.success(request, "アナリティクスデータの更新が完了しました")
             return redirect("analytics:index")
     else:

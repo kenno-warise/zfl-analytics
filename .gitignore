@@ -1,8 +1,8 @@
 .python-version
 .venv
 __pycache__
-backup_data.json
-dumpdata.json
+doc/ackup_data.json
+doc/dumpdata.json
 db.sqlite3
 dist
 migrations/*
