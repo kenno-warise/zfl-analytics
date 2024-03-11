@@ -36,14 +36,24 @@
 </div>
 
 {% else %}
+<!-- nav -->
 <nav class="navbar sticky-top">
   <div class="container-fluid">
     <h4>{% block title %}{{ analytics_set.nav_title }}{% endblock %}</h4>
-    {% if user.is_superuser %}
+    {% if user.is_staff %}
     <ul class="nav justify-content-end">
       <li class="nav-item">
+	<li class="nav-item dropdown">
+	  <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-gear" style="font-size:150%; color:limegreen;"></i>
+          </a>
+          <ul class="dropdown-menu">
+	    <li><a class="dropdown-item" href="{% url 'admin:analytics_analyticsappsettings_change' 1 %}">アプリ設定</a></li>
+	    <li><a class="dropdown-item" href="{% url 'admin:analytics_googleanalytics4config_change' 1 %}">GA4設定</a></li>
+          </ul>
+        </li>
 	<button title="Update analytics data" type="button" class="btn btn-defult" data-bs-toggle="modal" data-bs-target="#exampleModal">
-	  <i class="bi bi-arrow-clockwise"style="font-size:150%; color:limegreen;"></i>
+	  <i class="bi bi-arrow-clockwise" style="font-size:150%; color:limegreen;"></i>
 	</button>
       </li>
     </ul>
@@ -85,8 +95,8 @@
 	  </blockquote>
 	</div>
 	<div class="modal-footer">
-	  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Stop</button>
-	  <button type="submit" class="btn btn-primary">Execution</button>
+	  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">やめる</button>
+	  <button type="submit" class="btn btn-success">更新</button>
 	</div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 .python-version
 .venv
 __pycache__
-doc/ackup_data.json
+doc/backup_data.json
 doc/dumpdata.json
 db.sqlite3
 dist
