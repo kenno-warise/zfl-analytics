@@ -94,6 +94,10 @@ class AnalyticsAppSettings(models.Model):
     def __str__(self):
         return self.nav_title
 
+    class Meta:
+        verbose_name = "アナリティクスアプリの設定"
+        verbose_name_plural = "アナリティクスアプリの設定"
+
 
 class GoogleAnalytics4Config(models.Model):
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
@@ -104,6 +108,9 @@ class GoogleAnalytics4Config(models.Model):
         author = str(self.author)
         return author
 
+    class Meta:
+        verbose_name = "Googleアナリティクス４の構成"
+        verbose_name_plural = "Googleアナリティクス４の構成"
 
 class DimensionDate(models.Model):
     dates = models.DateField(verbose_name="日付")  # 西暦と月日を保存
@@ -117,5 +124,9 @@ class DimensionDate(models.Model):
     def __str__(self):
         dates = str(self.dates)
         return dates
+
+    class Meta:
+        verbose_name = "アナリティクスデータ"
+        verbose_name_plural = "アナリティクスデータ"
 
 # Create your models here.

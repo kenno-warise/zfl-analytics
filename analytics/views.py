@@ -96,7 +96,6 @@ def update(request):
     ga4_config = GoogleAnalytics4Config.objects.all().first()
     if ga4_config:
         if user == ga4_config.author:
-            print('もしかし更新されとる？')
             update_data.update_analyticsdata()
             messages.success(request, "アナリティクスデータの更新が完了しました")
             return redirect("analytics:index")
