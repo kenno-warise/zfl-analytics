@@ -6,53 +6,53 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('analytics', '0003_googleanalytics4config'),
+        ("analytics", "0003_googleanalytics4config"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='dimensiondate',
-            name='ad_impressions',
-            field=models.PositiveIntegerField(verbose_name='インプレッション数'),
+            model_name="dimensiondate",
+            name="ad_impressions",
+            field=models.PositiveIntegerField(verbose_name="インプレッション数"),
         ),
         migrations.AlterField(
-            model_name='dimensiondate',
-            name='ad_revenue',
-            field=models.PositiveIntegerField(verbose_name='広告収益'),
+            model_name="dimensiondate",
+            name="ad_revenue",
+            field=models.PositiveIntegerField(verbose_name="広告収益"),
         ),
         migrations.AlterField(
-            model_name='dimensiondate',
-            name='dates',
-            field=models.DateField(verbose_name='日付'),
+            model_name="dimensiondate",
+            name="dates",
+            field=models.DateField(verbose_name="日付"),
         ),
         migrations.AlterField(
-            model_name='dimensiondate',
-            name='id',
-            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="dimensiondate",
+            name="id",
+            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),
         ),
         migrations.AlterField(
-            model_name='dimensiondate',
-            name='new_users',
-            field=models.PositiveIntegerField(verbose_name='新規ユーザー数'),
+            model_name="dimensiondate",
+            name="new_users",
+            field=models.PositiveIntegerField(verbose_name="新規ユーザー数"),
         ),
         migrations.AlterField(
-            model_name='dimensiondate',
-            name='page_views',
-            field=models.PositiveIntegerField(verbose_name='ページビュー数'),
+            model_name="dimensiondate",
+            name="page_views",
+            field=models.PositiveIntegerField(verbose_name="ページビュー数"),
         ),
         migrations.AlterField(
-            model_name='dimensiondate',
-            name='sessions',
-            field=models.PositiveIntegerField(verbose_name='セッション数'),
+            model_name="dimensiondate",
+            name="sessions",
+            field=models.PositiveIntegerField(verbose_name="セッション数"),
         ),
         migrations.AlterField(
-            model_name='dimensiondate',
-            name='users',
-            field=models.PositiveIntegerField(verbose_name='アクセス数'),
+            model_name="dimensiondate",
+            name="users",
+            field=models.PositiveIntegerField(verbose_name="アクセス数"),
         ),
         migrations.AlterField(
-            model_name='googleanalytics4config',
-            name='id',
-            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="googleanalytics4config",
+            name="id",
+            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),
         ),
     ]

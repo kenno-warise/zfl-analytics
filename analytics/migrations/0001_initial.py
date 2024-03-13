@@ -12,16 +12,16 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='DimensionDate',
+            name="DimensionDate",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('dates', models.DateField()),
-                ('users', models.IntegerField()),
-                ('new_users', models.IntegerField()),
-                ('page_views', models.IntegerField()),
-                ('sessions', models.IntegerField()),
-                ('ad_revenue', models.IntegerField()),
-                ('ad_impressions', models.IntegerField()),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("dates", models.DateField()),
+                ("users", models.IntegerField()),
+                ("new_users", models.IntegerField()),
+                ("page_views", models.IntegerField()),
+                ("sessions", models.IntegerField()),
+                ("ad_revenue", models.IntegerField()),
+                ("ad_impressions", models.IntegerField()),
             ],
         ),
     ]
