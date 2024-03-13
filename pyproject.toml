@@ -61,25 +61,41 @@ dependencies = [
   "ruff>=0.0.243",
 ]
 [tool.hatch.envs.lint.scripts]
-typing = "mypy --install-types --non-interactive {args:analytics/views.py analytics/tests.py}"
+typing = "mypy --check-untyped-defs --install-types --non-interactive {args:analytics}"
 style = [
-  "ruff --fix {args:analytics/views.py analytics/tests.py}",
-  "black --check --diff {args:analytics/views.py analytics/tests.py}"
+  "ruff check --fix {args:analytics}",
+  "black --check --diff {args:analytics}"
 ]
 all = [
   "style",
   "typing",
 ]
 
+[tool.mypy]
+exclude = [
+  "__init__.py",
+  "__pycache__",
+  "migrations",
+  "apps.py",  
+]
+
 [tool.black]
+exclude = """
+migrations
+"""
 target-version = ["py37"]
-line-length = 120
+line-length = 90
 skip-string-normalization = true
 
 [tool.ruff]
+exclude = [
+  "analytics/migrations",
+  "analytics/__init__.py",
+  "analytics/apps.py",
+]
 target-version = "py37"
 line-length = 120
-select = [
+lint.select = [
   "A",
   "ARG",
   "B",
@@ -106,7 +122,7 @@ select = [
   "W",
   "YTT",
 ]
-ignore = [
+lint.ignore = [
   # 追記
   # Allow non-abstract empty methods in abstract base classes
   "B027",

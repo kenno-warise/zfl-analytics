@@ -1,5 +1,5 @@
-from google.analytics.data_v1beta import BetaAnalyticsDataClient
-from google.analytics.data_v1beta.types import (
+from google.analytics.data_v1beta import BetaAnalyticsDataClient  # type: ignore
+from google.analytics.data_v1beta.types import (  # type: ignore
     DateRange,
     Dimension,
     Metric,
@@ -8,7 +8,6 @@ from google.analytics.data_v1beta.types import (
 
 
 def run_report(property_id, start_date, end_date):
-
     client = BetaAnalyticsDataClient()
 
     request = RunReportRequest(
@@ -23,13 +22,12 @@ def run_report(property_id, start_date, end_date):
             Metric(name="sessions"),
             Metric(name="totalAdRevenue"),
             Metric(name="publisherAdImpressions"),
-
         ],
         date_ranges=[DateRange(start_date=start_date, end_date=end_date)],
     )
     response = client.run_report(request)
 
-    res_dict = {}
+    res_dict: dict = {}
 
     # ディメンション値のキーバリューを作成
     # {'dimension_header':['dimension_value', 'dimension_value', ...]}

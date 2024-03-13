@@ -6,38 +6,38 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('analytics', '0001_initial'),
+        ("analytics", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='dimensiondate',
-            name='ad_impressions',
+            model_name="dimensiondate",
+            name="ad_impressions",
             field=models.PositiveIntegerField(),
         ),
         migrations.AlterField(
-            model_name='dimensiondate',
-            name='ad_revenue',
+            model_name="dimensiondate",
+            name="ad_revenue",
             field=models.PositiveIntegerField(),
         ),
         migrations.AlterField(
-            model_name='dimensiondate',
-            name='new_users',
+            model_name="dimensiondate",
+            name="new_users",
             field=models.PositiveIntegerField(),
         ),
         migrations.AlterField(
-            model_name='dimensiondate',
-            name='page_views',
+            model_name="dimensiondate",
+            name="page_views",
             field=models.PositiveIntegerField(),
         ),
         migrations.AlterField(
-            model_name='dimensiondate',
-            name='sessions',
+            model_name="dimensiondate",
+            name="sessions",
             field=models.PositiveIntegerField(),
         ),
         migrations.AlterField(
-            model_name='dimensiondate',
-            name='users',
+            model_name="dimensiondate",
+            name="users",
             field=models.PositiveIntegerField(),
         ),
     ]

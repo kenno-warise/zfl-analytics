@@ -1,93 +1,80 @@
-from django.contrib.auth import get_user_model
-from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db import models
+from django.contrib.auth import get_user_model  # type: ignore
+from django.core.validators import MaxValueValidator, MinValueValidator  # type: ignore
+from django.db import models  # type: ignore
 
 
 class AnalyticsAppSettings(models.Model):
     CONTAINER_CHOICES = (
-        ('', '無効'),
-        ('container', 'container'),
-        ('container-sm', 'container-sm'),
-        ('container-fluid', 'container-fluid'),
+        ("", "無効"),
+        ("container", "container"),
+        ("container-sm", "container-sm"),
+        ("container-fluid", "container-fluid"),
     )
     nav_title = models.CharField(
-            verbose_name="ナビゲーションのタイトル",
-            max_length=50,
-            help_text="ナビゲーションバーの左上に表記される文字"
+        verbose_name="ナビゲーションのタイトル", max_length=50, help_text="ナビゲーションバーの左上に表記される文字"
     )
     heading_ja = models.CharField(
-            verbose_name="日本語の見出し",
-            max_length=100,
-            help_text="画面中央頭に表記される見出し。日本語で記入してください。"
+        verbose_name="日本語の見出し",
+        max_length=100,
+        help_text="画面中央頭に表記される見出し。日本語で記入してください。",
     )
     heading_us = models.CharField(
-            verbose_name="英語の見出し",
-            max_length=100,
-            help_text="画面中央頭に表記される見出し。英語で記入してください。"
+        verbose_name="英語の見出し", max_length=100, help_text="画面中央頭に表記される見出し。英語で記入してください。"
     )
     base_html_file = models.CharField(
-            blank=True,
-            null=True,
-            verbose_name="ベースファイル",
-            default='base.html',
-            max_length=100,
-            help_text="htmlファイルのベースとなるファイル名を入力してください。プロジェクト直下の場合は「base.html」。アプリ直下の場合は「app/base.html」。",
+        blank=True,
+        null=True,
+        verbose_name="ベースファイル",
+        default="base.html",
+        max_length=100,
+        help_text="htmlファイルのベースとなるファイル名を入力してください。プロジェクト直下の場合は「base.html」。アプリ直下の場合は「app/base.html」。",
     )
     container = models.CharField(
-            verbose_name="コンテナ",
-            blank=True,
-            default="container",
-            max_length=15,
-            choices=CONTAINER_CHOICES,
+        verbose_name="コンテナ",
+        blank=True,
+        default="container",
+        max_length=15,
+        choices=CONTAINER_CHOICES,
     )
     col_left = models.PositiveIntegerField(
-            verbose_name="カラム左側",
-            default=2,
-            validators=[
-                MaxValueValidator(9)
-            ],
-            help_text="デフォルト値は２です"
+        verbose_name="カラム左側",
+        default=2,
+        validators=[MaxValueValidator(9)],
+        help_text="デフォルト値は２です",
     )
     col_center = models.PositiveIntegerField(
-            verbose_name="カラム中央",
-            default=8,
-            validators=[
-                MinValueValidator(3),
-                MaxValueValidator(12)
-            ],
-            help_text="デフォルト値は８です"
+        verbose_name="カラム中央",
+        default=8,
+        validators=[MinValueValidator(3), MaxValueValidator(12)],
+        help_text="デフォルト値は８です",
     )
     col_right = models.PositiveIntegerField(
-            verbose_name="カラム右側",
-            default=2,
-            validators=[
-                MaxValueValidator(9)
-            ],
-            help_text="デフォルト値は２です"
+        verbose_name="カラム右側",
+        default=2,
+        validators=[MaxValueValidator(9)],
+        help_text="デフォルト値は２です",
     )
 
-    def clean(self):
-        col_sum = self.col_left + self.col_center + self.col_right
-        if not col_sum <= 12:
-            raise ValueError(f"グリッドシステム総数が{col_sum}です")
-
     def save(self, *args, **kwargs):
+        """テンプレートファイルのベースファイル設定"""
         import os
         import re
-        from django.conf import settings
+
+        from django.conf import settings  # type: ignore
+
         basehtml_file = "analytics/templates/analytics/base_index.html"
         file_dir = os.path.join(settings.BASE_DIR, basehtml_file)
-        with open(file_dir, 'r') as f:
+        with open(file_dir) as f:
             html_text = f.read()
 
         existing_name = re.search(self.base_html_file, html_text)
         if not existing_name:
             # 既存のベース.htmlが検索されなければ新名と置き換え
             # 正規表現モジュールを使ってベースファイル名を置き換える
-            comp = re.compile(r'\w+.html|\w+/\w+.html')
+            comp = re.compile(r"\w+.html|\w+/\w+.html")
             html_text = comp.sub(self.base_html_file, html_text)
-            
-            with open(file_dir, 'w') as f:
+
+            with open(file_dir, "w") as f:
                 f.write(html_text)
         super().save(*args, **kwargs)
 
@@ -109,8 +96,9 @@ class GoogleAnalytics4Config(models.Model):
         return author
 
     class Meta:
-        verbose_name = "Googleアナリティクス４の構成"
-        verbose_name_plural = "Googleアナリティクス４の構成"
+        verbose_name = "Googleアナリティクス4の構成"
+        verbose_name_plural = "Googleアナリティクス4の構成"
+
 
 class DimensionDate(models.Model):
     dates = models.DateField(verbose_name="日付")  # 西暦と月日を保存
@@ -128,5 +116,6 @@ class DimensionDate(models.Model):
     class Meta:
         verbose_name = "アナリティクスデータ"
         verbose_name_plural = "アナリティクスデータ"
+
 
 # Create your models here.
