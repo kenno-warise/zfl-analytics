@@ -1,75 +1,111 @@
 # zfl-analytics
 
-DjangoのWebフレームワークで開発した分析アプリです。
+- gif画像
 
-分析データはGoogleアナリティクスから収集した「date」ディメンションからなる「activeusers」「newusers」「pageview」「sessions」「totaladrevenue」「publisshaadimpression」のデータを活用します。
+PythonのWebフレームワークであるDjangoで開発した分析アプリです。
 
-以下は「zfl-analytics」において使用しているデータ名一覧です。
-
-|カラム名|内容|
-|----|----|
-|date|日付|
-|activeusers|特定の期間にアクセスしたユーザー数|
-|newusers|新規ユーザー|
-|pageview|ページが開かれた回数|
-|sessions|アクセスされてサイトから離脱するまでに行った移動数|
-|totaladrevenue|広告収益額|
-|publissheradimpression|広告が表示された回数|
+現在の仕様はGoogleアナリティクスのデータに特化した分析アプリとなっています。
 
 
 -----
 
 **目次**
-- [インストール](#インストール)
+- [使い方](#使い方)
 - [License](#license)
 
-## インストール
+## 使い方
 
+以下のバージョンでの使用を検討してください。
+
+|名前|バージョン|
+|----|----|
+|Python|3.7.0|
+|Django|2.2.5|
 
 ```console
-$ python3 -m venv .venv && . .venv/bin/activate
-
-$ pip install --upgrade pip
-
 $ pip install zfl-analytics
 ```
 
+Djangoプロジェクトの設定ファイルを開いて「INSTALLED_APPS」にアプリを設定します。
 
-データベースを初期化してアプリを起動します。
+```python
+# settings.py
+
+...
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'analytics',  # 追加
+]
+```
+
+Djangoプロジェクトのパス設定ファイルを開いてアプリのパスを設定します。
+
+```python
+# urls.py
+
+...
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    ...
+    path('', include('analytics.urls'))  # 追加
+]
+```
+
+データベースを初期化して管理画面に入る為のスーパーユーザーを作成しDjangoプロジェクトを起動します。
 
 ```console
 $ python3 manage.py migrate
 
+$ python3 manage.py createsuperuser
+
 $ python3 manage.py runserver
 ```
 
-アナリティクスデータ更新コマンド
+管理画面にアクセスして、「Googleアナリティクス4の構成」を追加してください。
+
+この構成はデータを更新する際にGoogleアナリティクス４のAPIを使用するときに必要です。
+
+※APIキーは環境変数に設定します。
+
+- 画像
+
+
+ログインした状態でアプリのページにアクセスすると、ナビゲーションバーに「設定」マークと「更新」マークが表示されます。
+
+- 画像
+
+更新ボタンをクリックすると、Googleアナリティクス4のAPIを通じてデータを取得します。
+
+データを取得する範囲は、「Googleアナリティクス4の構成」の「days\_ago」で設定されている値の範囲です。「7」であれば過去7日間のデータを取得することになります。注:現在取得できる範囲は過去30日間までとなっています。
+
+
+コマンドによるデータの更新は以下の方法です。
 
 ```console
+# 設定が完了していない場合
 $ python3 manage.py update_analyticsdata
 GoogleAnalytics4の設定が完了しておりません
-```
 
-...
-
-```console
+# 設定が完了している場合
 $ python3 manage.py update_analyticsdata
 アナリティクスアプリのデータベース更新完了
 ```
 
-ベースファイルがある場合の設定
+テンプレートファイルの設定は管理画面から行えます。
 
-```html
-<html>
-  <head>
-    {% block analytics-style %}{% endblock %}
-  </head>
-  <body>
-    {% block content %}
-    {% endblock %}
-  </body>
-</html>
-```
+Djangoプロジェクトの直下に「templates/base.html」が存在していれば自動的に読み込まれますが、存在していなかったりファイル名が「base.html」でない場合は独立したHTMLファイルを使用します。
+
+それらベースのテンプレートファイルの設定やBootstrapのグリッドシステムの設定は「アナリティクスアプリの設定」から行えます。
+
+- 画像
+
 
 ## License
 
