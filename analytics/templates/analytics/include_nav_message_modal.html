@@ -9,8 +9,8 @@
             <i class="bi bi-gear" style="font-size:150%; color:limegreen;"></i>
           </a>
           <ul class="dropdown-menu">
-	    <li><a class="dropdown-item" href="{% url 'admin:analytics_analyticsappsettings_change' 1 %}">アプリ設定</a></li>
-	    <li><a class="dropdown-item" href="{% url 'admin:analytics_googleanalytics4config_change' 1 %}">GA4設定</a></li>
+	    <li><a class="dropdown-item" href="{% url 'admin:analytics_analyticsappsettings_change' analytics_set.id %}">アプリ設定</a></li>
+	    <li><a class="dropdown-item" href="{% url 'admin:analytics_googleanalytics4config_change' request.user.id %}">GA4設定</a></li>
           </ul>
         </li>
 	<button title="Update analytics data" type="button" class="btn btn-defult" data-bs-toggle="modal" data-bs-target="#exampleModal">
