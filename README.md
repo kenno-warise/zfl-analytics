@@ -1,6 +1,6 @@
 # zfl-analytics
 
-- gif画像
+![Videotogif](https://github.com/kenno-warise/zfl-analytics/assets/51676019/7fdee6fa-c6cd-4609-bd28-aa288cce3123)
 
 PythonのWebフレームワークであるDjangoで開発した分析アプリです。
 
@@ -74,12 +74,12 @@ $ python3 manage.py runserver
 
 ※APIキーは環境変数に設定します。
 
-- 画像
+![zfl_analytics_4](https://github.com/kenno-warise/zfl-analytics/assets/51676019/f2db58c9-2b11-4645-9dfa-571d71de3d3a)
 
 
 ログインした状態でアプリのページにアクセスすると、ナビゲーションバーに「設定」マークと「更新」マークが表示されます。
 
-- 画像
+![zfl_analytics_5](https://github.com/kenno-warise/zfl-analytics/assets/51676019/cd4f18af-25c8-4631-9422-82307748986f)
 
 更新ボタンをクリックすると、Googleアナリティクス4のAPIを通じてデータを取得します。
 
@@ -104,7 +104,7 @@ Djangoプロジェクトの直下に「templates/base.html」が存在してい�
 
 それらベースのテンプレートファイルの設定やBootstrapのグリッドシステムの設定は「アナリティクスアプリの設定」から行えます。
 
-- 画像
+![zfl_analytics_6](https://github.com/kenno-warise/zfl-analytics/assets/51676019/cc2acc2a-49f1-4a67-9fe3-84d7b580ee34)
 
 
 ## License
