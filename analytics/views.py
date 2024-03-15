@@ -32,10 +32,7 @@ class HomePageView(View):
                 context["data_table"] = df_descending
             context["analytics_set"] = analytics_set
             context["dd_exist"] = dd_value_exist
-            if analytics_set.base_html_file:
-                template = "analytics/base_index.html"
-            else:
-                template = "analytics/index.html"
+            template = "analytics/base_index.html"
             return render(request, template, context)
         except Exception as inst:
             Exception(inst)
@@ -76,14 +73,14 @@ def pulldown(request):
     # テーブルに渡す用に、日付を降順にソートしたデータフレームを作成
     df_descending = df.sort_values("dates", ascending=False)
 
-    # 日付の設定値を変える処理
-    if date_value == "2":
-        df_descending = df_descending[:12]
-    elif date_value == "3":
-        df_descending = df_descending[:6]
+    # # 日付の設定値を変える処理
+    # if date_value == "2":
+    #     df_descending = df_descending[:12]
+    # elif date_value == "3":
+    #     df_descending = df_descending[:6]
 
-    if not request.user.is_staff:
-        df_descending.drop(["ad_revenue", "ad_impressions"], axis=1, inplace=True)
+    # if not request.user.is_staff:
+    #     df_descending.drop(["ad_revenue", "ad_impressions"], axis=1, inplace=True)
 
     # jsresponse用にリストを作成
     ls_data = [
@@ -106,12 +103,12 @@ class Update(UserPassesTestMixin, View):
 
     def get(self, request):
         """アナリティクスデータの更新"""
-        ga4_config = GoogleAnalytics4Config.objects.all().first()
-        if ga4_config:
-            update_data.update_analyticsdata()
+        try:
+            ga4_config = GoogleAnalytics4Config.objects.all().first()
+            update_data.update_analyticsdata(ga4_config)
             messages.success(request, "アナリティクスデータの更新が完了しました")
             return redirect("analytics:index")
-        else:
+        except Exception:
             messages.error(request, "GoogleAnalytics4Configの設定ができていません")
             return redirect("analytics:index")
 
