@@ -11,15 +11,22 @@ class AnalyticsAppSettings(models.Model):
         ("container-fluid", "container-fluid"),
     )
     nav_title = models.CharField(
-        verbose_name="ナビゲーションのタイトル", max_length=50, help_text="ナビゲーションバーの左上に表記される文字"
+        verbose_name="ナビゲーションのタイトル",
+        default="アナリティクス",
+        max_length=50,
+        help_text="ナビゲーションバーの左上に表記される文字",
     )
     heading_ja = models.CharField(
         verbose_name="日本語の見出し",
+        default="ようこそアナリティクスページへ",
         max_length=100,
         help_text="画面中央頭に表記される見出し。日本語で記入してください。",
     )
     heading_us = models.CharField(
-        verbose_name="英語の見出し", max_length=100, help_text="画面中央頭に表記される見出し。英語で記入してください。"
+        verbose_name="英語の見出し",
+        default="Welcome to analytics page",
+        max_length=100,
+        help_text="画面中央頭に表記される見出し。英語で記入してください。",
     )
     base_html_file = models.CharField(
         blank=True,
@@ -67,12 +74,12 @@ class AnalyticsAppSettings(models.Model):
         with open(file_dir) as f:
             html_text = f.read()
 
-        existing_name = re.search(self.base_html_file, html_text)
+        existing_name = re.search("^" + self.base_html_file, html_text)
         if not existing_name:
             # 既存のベース.htmlが検索されなければ新名と置き換え
             # 正規表現モジュールを使ってベースファイル名を置き換える
-            comp = re.compile(r"\w+.html|\w+/\w+.html")
-            html_text = comp.sub(self.base_html_file, html_text)
+            comp = re.compile(r"extends \'\w+.html|extends \'\w+/\w+.html")
+            html_text = comp.sub("extends '" + self.base_html_file, html_text)
 
             with open(file_dir, "w") as f:
                 f.write(html_text)

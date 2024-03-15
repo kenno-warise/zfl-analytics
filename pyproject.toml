@@ -49,7 +49,7 @@ runserver = "python3 manage.py runserver"
 startapp = "python3 manage.py startapp {args}"
 shell = "python3 manage.py shell"
 test = "python3 manage.py test {args}"
-cov = "coverage run --include=analytics/* --omit=analytics/test*,analytics/__init__.py,analytics/migrations/* manage.py test {args}"
+cov = "coverage run --include=analytics/* --omit=analytics/tests/*,analytics/__init__.py,analytics/migrations/*,analytics/update_api/* manage.py test {args}"
 cov-report = "coverage report -m"
 
 # pythonリンター
@@ -95,7 +95,9 @@ exclude = [
 ]
 target-version = "py37"
 line-length = 120
-lint.select = [
+
+[tool.ruff.lint]
+select = [
   "A",
   "ARG",
   "B",
@@ -122,7 +124,7 @@ lint.select = [
   "W",
   "YTT",
 ]
-lint.ignore = [
+ignore = [
   # 追記
   # Allow non-abstract empty methods in abstract base classes
   "B027",
