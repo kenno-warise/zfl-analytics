@@ -16,7 +16,7 @@ env:
 
 jobs:
   Build-Test:
-    name: Python ${{ matrix.python-version }} on ${{ startsWith(matrix.os, 'Linux' }}
+    name: Python ${{ matrix.python-version }} on ${{ startsWith(matrix.os, 'Linux') }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
