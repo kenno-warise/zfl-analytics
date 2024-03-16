@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model  # type: ignore
 from django.core.validators import MaxValueValidator, MinValueValidator  # type: ignore
 from django.db import models  # type: ignore
 
+from analytics.safety.function import decryption, encryption
+
 
 class AnalyticsAppSettings(models.Model):
     CONTAINER_CHOICES = (
@@ -94,9 +96,26 @@ class AnalyticsAppSettings(models.Model):
 
 
 class GoogleAnalytics4Config(models.Model):
-    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    property_id = models.PositiveIntegerField()
-    days_ago = models.PositiveIntegerField(default=7, validators=[MaxValueValidator(30)])
+    author = models.ForeignKey(
+        get_user_model(),
+        verbose_name="作成者",
+        on_delete=models.CASCADE,
+    )
+    property_id = models.CharField(verbose_name="プロパティID", max_length=10)
+    days_ago = models.PositiveIntegerField(
+        verbose_name="日付の範囲",
+        default=7,
+        validators=[MaxValueValidator(30)],
+    )
+
+    def save(self, *args, **kwargs):
+        # 保存する前にプロパティIDの暗号化
+        try:
+            self.property_id = encryption(self.property_id)
+        except ValueError:
+            # 既に暗号化されている場合は一度復号化してから再度暗号化して保存
+            self.property_id = encryption(decryption(self.property_id))
+        super().save(*args, **kwargs)
 
     def __str__(self):
         author = str(self.author)

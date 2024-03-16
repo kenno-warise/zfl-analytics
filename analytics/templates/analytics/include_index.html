@@ -5,8 +5,10 @@
 {% include 'analytics/include_not_analytics_set.html' %}
 
 {% else %}
+{% if user.is_staff %}
 <!-- Nav Message Modal -->
 {% include 'analytics/include_nav_message_modal.html' %}
+{% endif %}
 
 <!-- Container -->
 <div class="{{ analytics_set.container }}">
