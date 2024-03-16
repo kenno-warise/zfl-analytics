@@ -3,6 +3,7 @@ from django.utils import timezone  # type: ignore
 
 from analytics.models import DimensionDate
 from analytics.safety.function import decryption
+
 from .ga4_api import run_report
 
 

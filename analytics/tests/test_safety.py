@@ -1,13 +1,13 @@
 from django.test import TestCase  # type: ignore
 
-from analytics.safety.function import encryption, decryption
+from analytics.safety.function import decryption, encryption
 
 
 class SafetyTests(TestCase):
     """safetyモジュールのテスト"""
 
     def setUp(self):
-        self.original = 'test'
+        self.original = "test"
 
     def tearDown(self):
         del self.original

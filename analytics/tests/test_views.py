@@ -5,7 +5,7 @@ from django.utils import timezone  # type: ignore
 from django.utils.encoding import force_text  # type: ignore
 from django_pandas.io import read_frame  # type: ignore
 
-from analytics.models import AnalyticsAppSettings, DimensionDate
+from analytics.models import DimensionDate
 
 
 def create_dimensiondate():

@@ -69,10 +69,8 @@ class AnalyticsAppSettings(models.Model):
         import os
         import re
 
-        from django.conf import settings  # type: ignore
-
-        basehtml_file = "analytics/templates/analytics/base_index.html"
-        file_dir = os.path.join(settings.BASE_DIR, basehtml_file)
+        basehtml_file = "templates/analytics/base_index.html"
+        file_dir = os.path.join(os.path.dirname(__file__), basehtml_file)
         with open(file_dir) as f:
             html_text = f.read()
 
