@@ -3,7 +3,7 @@ requires = ["hatchling", "hatch-requirements-txt"]
 build-backend = "hatchling.build"
 
 [project]
-name = "analytics"
+name = "zfl-analytics"
 dynamic = ["version", "dependencies"]
 description = ''
 readme = "README.md"
