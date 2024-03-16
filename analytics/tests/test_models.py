@@ -1,7 +1,9 @@
+from django.contrib.auth.models import User  # type: ignore
 from django.test import TestCase  # type: ignore
 from django.utils import timezone  # type: ignore
 
-from analytics.models import AnalyticsAppSettings, DimensionDate
+from analytics.models import AnalyticsAppSettings, DimensionDate, GoogleAnalytics4Config
+from analytics.safety.function import encryption
 
 
 class AnalyticsAppSettingsTests(TestCase):
@@ -57,3 +59,23 @@ class DimensionDateTests(TestCase):
             ad_impressions=1,
         )
         self.assertEqual(dimensiondate.__str__(), str(date))
+
+
+class GoogleAnalytics4ConfigTests(TestCase):
+    """GoogleAnalytics4Configモデル"""
+
+    def test_save_property_id_encrypt(self):
+        """プロパティIDが保存される前に暗号化されるかテスト"""
+
+        encrypt = encryption("0123")
+        admin_user = User.objects.create(
+            username="myuser", is_superuser=True, is_staff=True
+        )
+        self.client.force_login(admin_user)
+        ga4_config = GoogleAnalytics4Config.objects.create(
+            author=admin_user,
+            property_id=encrypt,
+            days_ago=7,
+        )
+        # Assert
+        self.assertEqual(ga4_config.property_id, encrypt)

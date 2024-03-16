@@ -5,7 +5,7 @@ from django.utils import timezone  # type: ignore
 from django.utils.encoding import force_text  # type: ignore
 from django_pandas.io import read_frame  # type: ignore
 
-from analytics.models import DimensionDate
+from analytics.models import AnalyticsAppSettings, DimensionDate
 
 
 def create_dimensiondate():
@@ -30,6 +30,14 @@ class HomePageViewTests(TestCase):
 
     def tearDown(self):
         del self.cdd
+
+    def test_not_analytics_data(self):
+        """アナリティクスアプリの初期設定をしていない場合のページテスト"""
+        # HomePageViewを編集して条件かなんかでindex.htmlを読み込ませる必要がある
+        # url = reverse("analytics:index")
+        # response = self.client.get(url)
+        # template_name = "analytics/index.html"
+        # self.assertTemplateUsed(response, template_name)
 
     def test_create_context_data(self):
         """データが存在した場合にコンテキストデータを作成するテスト"""
