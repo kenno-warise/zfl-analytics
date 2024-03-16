@@ -2,12 +2,12 @@ import pandas as pd
 from django.utils import timezone  # type: ignore
 
 from analytics.models import DimensionDate
-
+from analytics.safety.function import decryption
 from .ga4_api import run_report
 
 
 def update_analyticsdata(ga4_config):
-    property_id = ga4_config.property_id
+    property_id = decryption(ga4_config.property_id)
     days_ago = ga4_config.days_ago
     # 本日から数日前までのアナリティクスデータを更新する処理
     end_date = timezone.now().date()
