@@ -99,7 +99,7 @@ class GoogleAnalytics4Config(models.Model):
         verbose_name="作成者",
         on_delete=models.CASCADE,
     )
-    property_id = models.CharField(verbose_name="プロパティID", max_length=10)
+    property_id = models.CharField(verbose_name="プロパティID", max_length=150)
     days_ago = models.PositiveIntegerField(
         verbose_name="日付の範囲",
         default=7,
