@@ -7,7 +7,7 @@ name = "zfl-analytics"
 dynamic = ["version", "dependencies"]
 description = ''
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.6"
 license = "MIT"
 keywords = []
 authors = [
@@ -19,7 +19,7 @@ classifiers = [
   "Intended Audience :: Developers",
   "Development Status :: 4 - Beta",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.6",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
@@ -83,7 +83,7 @@ exclude = [
 exclude = """
 migrations
 """
-target-version = ["py37"]
+# target-version = ["py37"]
 line-length = 90
 skip-string-normalization = true
 
@@ -93,7 +93,7 @@ exclude = [
   "analytics/__init__.py",
   "analytics/apps.py",
 ]
-target-version = "py37"
+# target-version = "py37"
 line-length = 120
 
 [tool.ruff.lint]
