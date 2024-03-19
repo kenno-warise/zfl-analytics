@@ -104,9 +104,15 @@ class Update(UserPassesTestMixin, View):
     def get(self, request):
         """アナリティクスデータの更新"""
         try:
+            import os
+
             ga4_config = GoogleAnalytics4Config.objects.all().first()
-            update_data.update_analyticsdata(ga4_config)
-            messages.success(request, "アナリティクスデータの更新が完了しました")
+            ga4_env = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+            if ga4_env:
+                update_data.update_analyticsdata(ga4_config)
+                messages.success(request, "アナリティクスデータの更新が完了しました")
+                return redirect("analytics:index")
+            messages.success(request, "GA4環境変数を取得できません")
             return redirect("analytics:index")
         except Exception:
             messages.error(request, "GoogleAnalytics4Configの設定ができていません")

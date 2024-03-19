@@ -122,7 +122,3 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
-
-# GoogelAnalytics4 APIの認証情報のパスを環境変数に追加
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/django/credentials.json"
