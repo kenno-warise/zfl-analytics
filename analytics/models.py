@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model  # type: ignore
-from django.core.validators import MaxValueValidator, MinValueValidator, FileExtensionValidator  # type: ignore
+from django.core.validators import FileExtensionValidator, MaxValueValidator, MinValueValidator  # type: ignore
 from django.db import models  # type: ignore
 
 from analytics.safety.function import decryption, encryption
@@ -102,9 +102,15 @@ class GoogleAnalytics4Config(models.Model):
     credential_path = models.FileField(
         blank=True,
         null=True,
-        upload_to='analytics/',
-        verbose_name='認証情報のファイルパス',
-        validators=[FileExtensionValidator(['json', ])],        
+        upload_to="analytics/",
+        verbose_name="認証情報のファイルパス",
+        validators=[
+            FileExtensionValidator(
+                [
+                    "json",
+                ]
+            )
+        ],
     )
     property_id = models.CharField(verbose_name="プロパティID", max_length=150)
     days_ago = models.PositiveIntegerField(

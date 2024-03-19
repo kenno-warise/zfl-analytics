@@ -106,15 +106,13 @@ class Update(UserPassesTestMixin, View):
         try:
             import os
 
-            from django.conf import settings
-            
             ga4_config = GoogleAnalytics4Config.objects.all().first()
             credential_filepath = ga4_config.credential_path.path
             os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credential_filepath
             update_data.update_analyticsdata(ga4_config)
             messages.success(request, "アナリティクスデータの更新が完了しました")
             return redirect("analytics:index")
-        except Exception as inst:
+        except Exception:
             messages.error(request, "GoogleAnalytics4Configの設定ができていません")
             return redirect("analytics:index")
 
