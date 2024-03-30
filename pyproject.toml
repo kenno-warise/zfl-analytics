@@ -37,7 +37,7 @@ path = "analytics/__init__.py"
 
 # デフォルト環境の依存パッケージ
 [tool.hatch.envs.default]
-dependencies = ["coverage"]
+dependencies = ["coverage[toml]"]
 
 # デフォルト環境のスクリプト
 # hatch run runserver
@@ -48,9 +48,25 @@ createsuperuser = "python3 manage.py createsuperuser"
 runserver = "python3 manage.py runserver"
 startapp = "python3 manage.py startapp {args}"
 shell = "python3 manage.py shell"
-test = "python3 manage.py test {args}"
-cov = "coverage run --include=analytics/* --omit=analytics/tests/*,analytics/__init__.py,analytics/migrations/*,analytics/update_api/* manage.py test {args}"
+# cov = "coverage run --include=analytics/* --omit=analytics/tests/*,analytics/__init__.py,analytics/migrations/*,analytics/update_api/* manage.py test {args}"
+cov = "coverage run manage.py test {args}"
 cov-report = "coverage report -m"
+test = [
+  "cov",
+  "cov-report",
+]
+
+[tool.coverage.run]
+source_pkgs = ["analytics"]
+branch = true
+parallel = false
+omit = [
+  "analytics/tests/*",
+  "analytics/__init__.py",
+  "analytics/migrations/*",
+  "analytics/update_api/*",
+  "analytics/apps.py",
+]
 
 # pythonリンター
 [tool.hatch.envs.lint]
